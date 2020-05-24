@@ -1,0 +1,150 @@
+实验4 类与对象
+1、实验目的：掌握使用类来封装对象的属性和方法。
+2、实验内容
+（1）有理数的类封装
+  我们有时希望程序能对分数（分子分母都是整数）进行四则运算，而且两个分数四则运算的结果仍然是分数。分数也称有理数。本实验要求用类实现对有理数的封装，有理数有两个重要的成员：分子和分母，另外还有重要的四则运算。
+   编写一个Java应用程序，该程序中有一个Rational(有理数)类，具体要求如下：
+●Rational类有两个int型成员变量，名字分别为numerator(分子)和denominator(分母)。
+●提供Rational add(Rational r)方法，即有理数调用该方法与参数指定的有理数做加法运算并返回一个Rational对象。
+●提供Rational sub(Rational r)方法，即有理数调用该方法与参数指定的有理数做减法运算并返回一个Rational对象。
+●提供Rational muti(Rational r)方法，即有理数调用该方法与参数指定的有理数做乘法运算并返回一个Rational对象。
+●提供Rational div(Rational r)方法，即有理数调用该方法与参数指定的有理数做除法运算并返回一个Rational对象。
+Rational.java
+package applet;
+
+class Rational {
+    int numerator,denominator;
+    Rational(){}
+    Rational(int a,int b){
+       setNumeratorAndDenominator(a,b);
+    }
+    void setNumeratorAndDenominator(int a,int b){  //设置分子和分母
+       int c=f(Math.abs(a),Math.abs(b));           //计算最大公约数
+       numerator=a/c;
+       denominator=b/c;
+       if(numerator<0&&denominator<0){
+           numerator=-numerator;
+           denominator=-denominator;
+       }
+    }
+   int getNumerator() {
+       return numerator;
+   }
+   int getDenominator() {
+       return denominator;
+   }  
+   int f(int a,int b){   //求a和b的最大公约数
+       if(a<b){
+          int c=a;
+          a=b;
+          b=c; 
+       }
+       int r=a%b;
+       while(r!=0){
+          a=b;
+          b=r;
+          r=a%b;
+       } 
+       return b;
+    }
+    Rational add(Rational r) {
+       int a=r.getNumerator();
+       int b=r.getDenominator();
+       int newNumerator=numerator*b+denominator*a;
+       int newDenominator=denominator*b;
+       Rational result=new Rational(newNumerator,newDenominator);
+       return result;
+    }
+    Rational sub(Rational r) {
+       int a=r.getNumerator();
+       int b=r.getDenominator();
+       int newNumerator=numerator*b-denominator*a;
+       int newDenominator=denominator*b;
+       Rational result=new Rational(newNumerator,newDenominator);
+       return result;
+    }
+    Rational muti(Rational r) {
+       int a=r.getNumerator();
+       int b=r.getDenominator();
+       int newNumerator=numerator*a;
+       int newDenominator=denominator*b;
+       Rational result=new Rational(newNumerator,newDenominator);
+       return result;
+    }
+    Rational div(Rational r) {
+       int a=r.getNumerator();
+       int b=r.getDenominator();
+       int newNumerator=numerator*b;
+       int newDenominator=denominator*a;
+       Rational result=new Rational(newNumerator,newDenominator);
+       return result;
+    }
+}
+
+public class FirstApplet {
+	public static void main(String[] args) {
+		  Rational r1; 
+		     r1=new Rational(1,5);   //创建分子、分母分别为1和5的有理数r1
+		      Rational r2;
+		     r2=new Rational(3,2);   //创建分子、分母分别为3和2的有理数r2
+		      Rational result= r1.add(r2);   //r1调用方法和r2做加法运算
+		      int a= result.getNumerator(); // result调用方法返回自己的分子
+		      int b= result.getDenominator();  // result调用方法返回自己的分母
+		      double p=a;
+		      double q=b;  
+		      double doubleResult=p/q;
+		      System.out.print("分数"+r1.getNumerator()+"/"+r1.getDenominator()); 
+		      System.out.print("与分数"+r2.getNumerator()+"/"+r2.getDenominator()+"的和等于"+doubleResult); 
+	}
+}
+
+实验结果如下
+
+
+（2）实例成员与类成员、
+按程序模板的要求编写源文件，注意程序的输出结果，并能正确解释输出结果。
+Ex4_2.java
+package applet;
+
+class A {
+   float a;         //声明一个实例float变量a
+   static float b;         //声明一个static的float变量b
+    void setA(float a) {
+      this.a=a;     // 将参数a的值赋值给成员变量a
+    }
+    void setB(float b){
+      this.b=b;    // 将参数b的值赋值给成员变量b
+    }
+    float getA( ) {
+       return a;
+    }
+    float getB( ) {
+       return b;
+    }
+    void inputA( ) {
+       System.out.println(a);
+    }
+   static void inputB( ){
+       System.out.println(b);
+    }
+}
+public class FirstApplet {
+	public static void main(String[] args) {
+		 A.b=100;        // 通过类名操作类变量b，并赋值100
+	     A.inputB();     // 通过类名调用方法inputB( )
+	       A cat=new A( );
+	       A dog=new A( );
+	       cat.setA(200);    // cat调用方法setA(int a)将cat的成员a的值设置为200
+	       cat.setB(400);    // cat调用方法setB(int b)将cat的成员b的值设置为400
+	       dog.setA(200);    // dog调用方法setA(int a)将dog的成员a的值设置为200
+	       dog.setB(900);    // dog调用方法setB(int b)将dog的成员b的值设置为900
+	       cat.inputA();     // cat调用inputA( ) 
+	       cat.inputB();     // cat调用inputB( ) 
+	       dog.inputA();     // dog调用inputA( ) 
+	       dog.inputB();     // dog调用inputB( ) 
+	}
+}
+实验结果如下：
+
+实验总结：
+我觉得java是一种面向对象的语言，最关键要掌握的java的三个特性：封装性 多态性 继承性，并且以面向对象为基础。掌握类和对象的使用和方法，才能真正学好java。
